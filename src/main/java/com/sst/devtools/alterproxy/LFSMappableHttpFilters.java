@@ -31,7 +31,6 @@ public class LFSMappableHttpFilters extends HttpFiltersAdapter {
             FullHttpRequest fhr = (FullHttpRequest) httpObject;
             final HttpMethod method = fhr.getMethod();
             final String hostHeader = HttpHeaders.getHost(fhr, "");
-            LOG.info("proxy -> server, Host={}, {}, {}", hostHeader, method, fhr.getUri());
             boolean isLFSMappableMethod =
                 HttpMethod.GET.equals(method)
                     || HttpMethod.POST.equals(method)
@@ -47,6 +46,7 @@ public class LFSMappableHttpFilters extends HttpFiltersAdapter {
                 isLFSMappableMethod = false;
             }
             if (!StringUtils.isEmpty(hostHeader) && isLFSMappableMethod && Objects.nonNull(uri)) {
+                LOG.info("proxy -> server, Host={}, {}, {}", hostHeader, method, fhr.getUri());
                 final String path = uri.getPath();
                 LOG.trace("matcher path = {}", path);
                 LFSMapEntry map = lfsm.getMap(hostHeader, path);
