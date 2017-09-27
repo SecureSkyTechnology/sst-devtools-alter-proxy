@@ -1,6 +1,8 @@
 package com.sst.devtools.alterproxy.swingui;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
@@ -35,5 +37,11 @@ public class MainWindow {
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         mainPanel = new MainPanel();
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                mainPanel.saveConfig();
+            }
+        });
     }
 }
