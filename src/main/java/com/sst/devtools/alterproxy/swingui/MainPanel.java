@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -118,9 +120,16 @@ public class MainPanel extends JPanel {
                 Class[] columnTypes =
                     new Class[] { String.class, String.class, String.class, String.class, String.class, String.class };
 
+                @Override
                 @SuppressWarnings({ "unchecked", "rawtypes" })
                 public Class getColumnClass(int columnIndex) {
                     return columnTypes[columnIndex];
+                }
+
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // disable all cell editing feature.
+                    return false;
                 }
             });
         tblLFSMapping.getColumnModel().getColumn(1).setPreferredWidth(200);
@@ -128,6 +137,13 @@ public class MainPanel extends JPanel {
         tblLFSMapping.getColumnModel().getColumn(3).setPreferredWidth(100);
         tblLFSMapping.getColumnModel().getColumn(4).setPreferredWidth(150);
         tblLFSMapping.getColumnModel().getColumn(5).setPreferredWidth(100);
+        tblLFSMapping.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                if (me.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(me)) {
+                    MainPanel.this.onEditButtonClicked();
+                }
+            }
+        });
         scrollPaneLFSMapping.setViewportView(tblLFSMapping);
 
         btnUp = new JButton("up");
@@ -156,17 +172,7 @@ public class MainPanel extends JPanel {
         btnEdit = new JButton("edit");
         btnEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                final int selectedIndex = tblLFSMapping.getSelectedRow();
-                if (0 > selectedIndex) {
-                    return;
-                }
-                LFSMapEntry m = mapEntries.get(selectedIndex);
-                IMapEntryEditorNotifier notifier = new MapEntryEditorNotifierImpl(MainPanel.this, selectedIndex, m);
-
-                MapEntryEditDialog dlg =
-                    new MapEntryEditDialog(MainPanel.this.getWindowFrame(), "edit mapping", notifier);
-                dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                dlg.setVisible(true);
+                MainPanel.this.onEditButtonClicked();
             }
         });
         panelProxyControl.add(btnEdit, "cell 0 3");
@@ -347,6 +353,19 @@ public class MainPanel extends JPanel {
         mapEntries.add(newEntry);
         DefaultTableModel model = (DefaultTableModel) tblLFSMapping.getModel();
         model.addRow(newEntry.toJTableRow());
+    }
+
+    public void onEditButtonClicked() {
+        final int selectedIndex = tblLFSMapping.getSelectedRow();
+        if (0 > selectedIndex) {
+            return;
+        }
+        LFSMapEntry m = mapEntries.get(selectedIndex);
+        IMapEntryEditorNotifier notifier = new MapEntryEditorNotifierImpl(MainPanel.this, selectedIndex, m);
+
+        MapEntryEditDialog dlg = new MapEntryEditDialog(MainPanel.this.getWindowFrame(), "edit mapping", notifier);
+        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg.setVisible(true);
     }
 
     public void updateLFSMapEntry(LFSMapEntry newEntry, int replaceIndex) {
