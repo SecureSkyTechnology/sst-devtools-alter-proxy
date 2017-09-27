@@ -42,21 +42,8 @@ public class LFSMapper {
         this.maps.add(e);
     }
 
-    public List<LFSMapEntry> getClonedMapEntries() {
-        List<LFSMapEntry> r = new ArrayList<>();
-        for (LFSMapEntry e : maps) {
-            LFSMapEntry n = (LFSMapEntry) e.clone();
-            r.add(n);
-        }
-        return r;
-    }
-
-    public void updateMepEntries(List<LFSMapEntry> newList) {
-        this.maps.clear();
-        for (LFSMapEntry e : newList) {
-            LFSMapEntry n = (LFSMapEntry) e.clone();
-            this.maps.add(n);
-        }
+    public List<LFSMapEntry> getMaps() {
+        return maps;
     }
 
     public void clearMap() {
@@ -73,8 +60,6 @@ public class LFSMapper {
         if (StringUtils.isEmpty(testHostHeader) || StringUtils.isEmpty(testPath)) {
             return null;
         }
-        final String pathext = ApacheHttpdMimeTypes.defaultMimeTypes.getExtension(testPath);
-        LOG.trace("pathext = {}", pathext);
         for (LFSMapEntry e : maps) {
             if (e.matches(testHostHeader, testPath)) {
                 return e;
