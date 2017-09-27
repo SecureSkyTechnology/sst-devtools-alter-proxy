@@ -127,7 +127,8 @@ public class LFSMapperTest {
                 "/",
                 Paths.get(tmpPathDir, "aaa").toString(),
                 IndexHandlePolicy.PreferIndexHtml,
-                new TreeSet<>(Arrays.asList("txt")),
+                // LFSMapper.createMappedResponse() does NOT check file extensions.
+                new TreeSet<>(Arrays.asList("dummy")),
                 StandardCharsets.UTF_8);
 
         FullHttpResponse hr = (FullHttpResponse) LFSMapper.createMappedResponse(e0, "/test.txt");
@@ -160,7 +161,8 @@ public class LFSMapperTest {
                 "/bbb/",
                 Paths.get(tmpPathDir, "bbb").toString(),
                 IndexHandlePolicy.ProxyToServer,
-                new TreeSet<>(Arrays.asList("html")),
+                // LFSMapper.createMappedResponse() does NOT check file extensions.
+                new TreeSet<>(Arrays.asList("dummy")),
                 StandardCharsets.UTF_8);
 
         FullHttpResponse hr = (FullHttpResponse) LFSMapper.createMappedResponse(e0, "/bbb/");
@@ -169,7 +171,7 @@ public class LFSMapperTest {
         hr = (FullHttpResponse) LFSMapper.createMappedResponse(e0, "/bbb/ccc/ddd/");
         assertNull(hr);
 
-        hr = (FullHttpResponse) LFSMapper.createMappedResponse(e0, "/bbb/test.txt");
+        hr = (FullHttpResponse) LFSMapper.createMappedResponse(e0, "/bbb/test.css");
         assertNull(hr);
 
         hr = (FullHttpResponse) LFSMapper.createMappedResponse(e0, "/bbb/test.html");
