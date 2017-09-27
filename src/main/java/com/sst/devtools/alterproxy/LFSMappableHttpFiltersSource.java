@@ -44,12 +44,12 @@ public class LFSMappableHttpFiltersSource extends HttpFiltersSourceAdapter {
 
     @Override
     public int getMaximumRequestBufferSizeInBytes() {
-        return 1024 * 1024; // aggregate chunks and decompress until 1MB request.
+        return 10 * 1024 * 1024; // aggregate chunks and decompress until 10MB request.
     }
 
     @Override
     public int getMaximumResponseBufferSizeInBytes() {
-        return 1024 * 1024; // aggregate chunks and decompress until 1MB response.
+        return 10 * 1024 * 1024; // aggregate chunks and decompress until 10MB response.
     }
 
 }
