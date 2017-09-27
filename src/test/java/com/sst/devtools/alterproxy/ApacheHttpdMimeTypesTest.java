@@ -4,12 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.sst.devtools.alterproxy.ApacheHttpdMimeTypes;
-
-public class AppTest {
+public class ApacheHttpdMimeTypesTest {
 
     @Test
-    public void testApacheHttpdMimeTypes() {
+    public void test() {
         ApacheHttpdMimeTypes mt = ApacheHttpdMimeTypes.defaultMimeTypes;
         assertEquals("", mt.getExtension(null));
         assertEquals("", mt.getExtension(""));
