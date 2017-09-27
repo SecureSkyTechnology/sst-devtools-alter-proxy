@@ -46,6 +46,13 @@ public class MainPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LoggerFactory.getLogger(MainPanel.class);
 
+    private JButton btnAdd;
+    private JButton btnUp;
+    private JButton btnEdit;
+    private JButton btnDown;
+    private JButton btnDelete;
+    private JButton btnStart;
+    private JButton btnStop;
     private JTable tblLFSMapping;
     private JSpinner spnListeningPort;
     private JTextArea txtaLog;
@@ -77,7 +84,7 @@ public class MainPanel extends JPanel {
         spnListeningPort.setValue(AppConfig.DEFAULT_LISTENING_PORT);
         panelProxyControl.add(spnListeningPort, "cell 1 0,growx");
 
-        JButton btnAdd = new JButton("add");
+        btnAdd = new JButton("add");
         btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 IMapEntryEditorNotifier notifier = new MapEntryEditorNotifierImpl(MainPanel.this);
@@ -123,7 +130,7 @@ public class MainPanel extends JPanel {
         tblLFSMapping.getColumnModel().getColumn(5).setPreferredWidth(100);
         scrollPaneLFSMapping.setViewportView(tblLFSMapping);
 
-        JButton btnUp = new JButton("up");
+        btnUp = new JButton("up");
         btnUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final int selectedIndex = tblLFSMapping.getSelectedRow();
@@ -146,7 +153,7 @@ public class MainPanel extends JPanel {
         });
         panelProxyControl.add(btnUp, "cell 0 2");
 
-        JButton btnEdit = new JButton("edit");
+        btnEdit = new JButton("edit");
         btnEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final int selectedIndex = tblLFSMapping.getSelectedRow();
@@ -164,7 +171,7 @@ public class MainPanel extends JPanel {
         });
         panelProxyControl.add(btnEdit, "cell 0 3");
 
-        JButton btnDown = new JButton("down");
+        btnDown = new JButton("down");
         btnDown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final int selectedIndex = tblLFSMapping.getSelectedRow();
@@ -187,7 +194,7 @@ public class MainPanel extends JPanel {
         });
         panelProxyControl.add(btnDown, "cell 0 4");
 
-        JButton btnDelete = new JButton("delete");
+        btnDelete = new JButton("delete");
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final int selectedIndex = tblLFSMapping.getSelectedRow();
@@ -204,7 +211,7 @@ public class MainPanel extends JPanel {
         });
         panelProxyControl.add(btnDelete, "cell 0 5");
 
-        JButton btnStart = new JButton("start");
+        btnStart = new JButton("start");
         btnStart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 saveConfig();
@@ -222,18 +229,33 @@ public class MainPanel extends JPanel {
                         .withFiltersSource(new LFSMappableHttpFiltersSource(lfsm))
                         .start();
                 LOG.info("server started at port:{}", portnum);
+                btnAdd.setEnabled(false);
+                btnUp.setEnabled(false);
+                btnEdit.setEnabled(false);
+                btnDown.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnStart.setEnabled(false);
+                btnStop.setEnabled(true);
                 JOptionPane.showMessageDialog(getWindowFrame(), "server started successfuly at port:" + portnum);
             }
         });
         panelProxyControl.add(btnStart, "cell 0 7");
 
-        JButton btnStop = new JButton("stop");
+        btnStop = new JButton("stop");
+        btnStop.setEnabled(false);
         btnStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (Objects.nonNull(server)) {
                     LOG.info("server stopping ...");
                     server.stop();
                     LOG.info("server stopped.");
+                    btnAdd.setEnabled(true);
+                    btnUp.setEnabled(true);
+                    btnEdit.setEnabled(true);
+                    btnDown.setEnabled(true);
+                    btnDelete.setEnabled(true);
+                    btnStart.setEnabled(true);
+                    btnStop.setEnabled(false);
                     JOptionPane.showMessageDialog(getWindowFrame(), "server stopped.");
                 }
             }
