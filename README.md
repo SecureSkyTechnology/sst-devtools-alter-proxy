@@ -60,7 +60,7 @@ mvnw exec:java
 
 ## Eclipseプロジェクト用の設定
 
-SecureSkyTechnology/howto-eclipse-setup の `setup-type1` を使用。README.mdで以下を参照のこと:
+https://github.com/SecureSkyTechnology/howto-eclipse-setup の `setup-type1` を使用。README.mdで以下を参照のこと:
 
 * Ecipseのインストール
 * Clean Up/Formatter 設定
