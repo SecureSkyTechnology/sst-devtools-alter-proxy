@@ -2,120 +2,120 @@
 
 local http proxy alternating http contents to local file contents.
 
-- ƒzƒXƒg–¼ + Path ‚ðƒ[ƒJƒ‹ƒfƒBƒŒƒNƒgƒŠ‚Éƒ}ƒbƒsƒ“ƒO‚µA‚à‚µƒŠƒNƒGƒXƒg‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ªƒ[ƒJƒ‹‚É‚ ‚ê‚ÎA‚»‚¿‚ç‚ðƒŒƒXƒ|ƒ“ƒX‚Æ‚µ‚Ä•Ô‚·ƒ[ƒJƒ‹HTTPƒvƒƒLƒV‚Å‚·B
-- ‚±‚ÌƒvƒƒLƒV‚ð’Ê‚¹‚ÎAƒ[ƒJƒ‹‚ÌHTML/CSS/JS‚ÌC³“à—e‚ðƒT[ƒo‚ÉUP‚µ‚È‚­‚Ä‚àA‚·‚®‚Éƒuƒ‰ƒEƒUã‚ÅŠm”F‚Å‚«‚Ü‚·B
-  - PHP‚È‚Ç“®“I‚ÈƒŠƒNƒGƒXƒg‚ÍƒT[ƒo‚É‚»‚Ì‚Ü‚ÜƒvƒƒLƒV‚³‚ê‚Ü‚·‚Ì‚ÅAƒAƒvƒŠ‚ª“®‚­ó‘Ô‚ÅŠm”F‚Å‚«‚é‚æ‚¤‚É‚È‚è‚Ü‚·B
-- Web§ì‚âWebƒAƒvƒŠŠJ”­‚Ì‚¨‹Ÿ‚É‚²—˜—p‚­‚¾‚³‚¢B
+- ãƒ›ã‚¹ãƒˆå + Path ã‚’ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ãƒžãƒƒãƒ”ãƒ³ã‚°ã—ã€ã‚‚ã—ãƒªã‚¯ã‚¨ã‚¹ãƒˆã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ­ãƒ¼ã‚«ãƒ«ã«ã‚ã‚Œã°ã€ãã¡ã‚‰ã‚’ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã¨ã—ã¦è¿”ã™ãƒ­ãƒ¼ã‚«ãƒ«HTTPãƒ—ãƒ­ã‚­ã‚·ã§ã™ã€‚
+- ã“ã®ãƒ—ãƒ­ã‚­ã‚·ã‚’é€šã›ã°ã€ãƒ­ãƒ¼ã‚«ãƒ«ã®HTML/CSS/JSã®ä¿®æ­£å†…å®¹ã‚’ã‚µãƒ¼ãƒã«UPã—ãªãã¦ã‚‚ã€ã™ãã«ãƒ–ãƒ©ã‚¦ã‚¶ä¸Šã§ç¢ºèªã§ãã¾ã™ã€‚
+  - PHPãªã©å‹•çš„ãªãƒªã‚¯ã‚¨ã‚¹ãƒˆã¯ã‚µãƒ¼ãƒã«ãã®ã¾ã¾ãƒ—ãƒ­ã‚­ã‚·ã•ã‚Œã¾ã™ã®ã§ã€ã‚¢ãƒ—ãƒªãŒå‹•ãçŠ¶æ…‹ã§ç¢ºèªã§ãã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã™ã€‚
+- Webåˆ¶ä½œã‚„Webã‚¢ãƒ—ãƒªé–‹ç™ºã®ãŠä¾›ã«ã”åˆ©ç”¨ãã ã•ã„ã€‚
 
 ## requirement
 
 * Java8
 
-## Žg‚¢•û
+## ä½¿ã„æ–¹
 
-1. jarƒtƒ@ƒCƒ‹‚ðDL‚µAƒ_ƒuƒ‹ƒNƒŠƒbƒN‚µ‚Ä‹N“®‚µ‚Ü‚·B
-2. addƒ{ƒ^ƒ“‚ðƒNƒŠƒbƒN‚µAƒzƒXƒg–¼ + Path ‚É‘Î‚µ‚ÄAƒ}ƒbƒsƒ“ƒO‚·‚éƒ[ƒJƒ‹ƒfƒBƒŒƒNƒgƒŠ‚ð“o˜^‚µ‚Ü‚·B
-   - `target host` : ƒzƒXƒg–¼‚ð“ü—Í‚µ‚Ü‚·B(wild-card‚âregexp‚Í—˜—p‚Å‚«‚Ü‚¹‚ñ)
-   - `path prefix` : ƒ}ƒbƒsƒ“ƒO‚µ‚½‚¢Path‚ð“ü—Í‚µ‚Ü‚·B•K‚¸––”ö‚ð "/" ‚ÅI‚í‚ç‚¹‚Ä‚­‚¾‚³‚¢Bƒ‹[ƒgpath‚ðƒ}ƒbƒsƒ“ƒO‚µ‚½‚¢ê‡‚Í "/" ˆê•¶Žš‚ð“ü—Í‚µ‚Ü‚·B
-   - `local directory` : ƒ}ƒbƒsƒ“ƒO‚·‚éƒ[ƒJƒ‹ƒfƒBƒŒƒNƒgƒŠ‚ð‘I‘ð‚µ‚Ü‚·B
-   - `"/" handling` : "/" ‚ÅI‚í‚Á‚½ê‡‚Ìƒ}ƒbƒsƒ“ƒO“®ì‚ð‘I‘ð‚µ‚Ü‚·Bƒ}ƒbƒsƒ“ƒO‚¹‚¸‚»‚Ì‚Ü‚ÜƒIƒŠƒWƒ“ƒT[ƒo‚ÉƒvƒƒLƒV‚·‚é‚©A‚à‚µƒ[ƒJƒ‹‚É index.html ‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ð—Dæ‚·‚é‚©‚ð‘I‘ð‚Å‚«‚Ü‚·B
-   - `filename extensions` : ƒ}ƒbƒsƒ“ƒO‘ÎÛ‚Ìƒtƒ@ƒCƒ‹–¼Šg’£Žq‚ðƒzƒƒCƒgƒŠƒXƒg‚Å“ü—Í‚µ‚Ü‚·B"."(ƒhƒbƒg)‚Í•s—vA•¡”“ü—Í‚·‚éê‡‚Í","(ƒJƒ“ƒ})‚Å‹æØ‚Á‚Ä‚­‚¾‚³‚¢B
-   - `text charset` : mime-type‚ª "text/" ‚ÅŽn‚Ü‚éŠg’£Žq‚¨‚æ‚Ñ ".js" ƒtƒ@ƒCƒ‹‚É‚Â‚¢‚ÄA`Content-Type` ƒŒƒXƒ|ƒ“ƒXƒwƒbƒ_[‚ÉŠÜ‚ß‚éƒfƒtƒHƒ‹ƒg‚Ìcharset‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢B
-3. `listening port` ‚Åproxy‚Æ‚µ‚Ä‚Ì‘ÒŽóƒ|[ƒg”Ô†‚ðÝ’è‚µ‚Ü‚·B
-4. start / stop ƒ{ƒ^ƒ“‚Åproxy‚ð‹N“®/’âŽ~‚µ‚Ü‚·B
-   - ‹N“®‚Íˆêu‚Å‚·‚ªA’âŽ~‚Í”•b‚©‚©‚è‚Ü‚·B
+1. jarãƒ•ã‚¡ã‚¤ãƒ«ã‚’DLã—ã€ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã—ã¦èµ·å‹•ã—ã¾ã™ã€‚
+2. addãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ã€ãƒ›ã‚¹ãƒˆå + Path ã«å¯¾ã—ã¦ã€ãƒžãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ç™»éŒ²ã—ã¾ã™ã€‚
+   - `target host` : ãƒ›ã‚¹ãƒˆåã‚’å…¥åŠ›ã—ã¾ã™ã€‚(wild-cardã‚„regexpã¯åˆ©ç”¨ã§ãã¾ã›ã‚“)
+   - `path prefix` : ãƒžãƒƒãƒ”ãƒ³ã‚°ã—ãŸã„Pathã‚’å…¥åŠ›ã—ã¾ã™ã€‚å¿…ãšæœ«å°¾ã‚’ "/" ã§çµ‚ã‚ã‚‰ã›ã¦ãã ã•ã„ã€‚ãƒ«ãƒ¼ãƒˆpathã‚’ãƒžãƒƒãƒ”ãƒ³ã‚°ã—ãŸã„å ´åˆã¯ "/" ä¸€æ–‡å­—ã‚’å…¥åŠ›ã—ã¾ã™ã€‚
+   - `local directory` : ãƒžãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸æŠžã—ã¾ã™ã€‚
+   - `"/" handling` : "/" ã§çµ‚ã‚ã£ãŸå ´åˆã®ãƒžãƒƒãƒ”ãƒ³ã‚°å‹•ä½œã‚’é¸æŠžã—ã¾ã™ã€‚ãƒžãƒƒãƒ”ãƒ³ã‚°ã›ãšãã®ã¾ã¾ã‚ªãƒªã‚¸ãƒ³ã‚µãƒ¼ãƒã«ãƒ—ãƒ­ã‚­ã‚·ã™ã‚‹ã‹ã€ã‚‚ã—ãƒ­ãƒ¼ã‚«ãƒ«ã« index.html ãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã™ã‚‹ã‹ã‚’é¸æŠžã§ãã¾ã™ã€‚
+   - `filename extensions` : ãƒžãƒƒãƒ”ãƒ³ã‚°å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«åæ‹¡å¼µå­ã‚’ãƒ›ãƒ¯ã‚¤ãƒˆãƒªã‚¹ãƒˆã§å…¥åŠ›ã—ã¾ã™ã€‚"."(ãƒ‰ãƒƒãƒˆ)ã¯ä¸è¦ã€è¤‡æ•°å…¥åŠ›ã™ã‚‹å ´åˆã¯","(ã‚«ãƒ³ãƒž)ã§åŒºåˆ‡ã£ã¦ãã ã•ã„ã€‚
+   - `text charset` : mime-typeãŒ "text/" ã§å§‹ã¾ã‚‹æ‹¡å¼µå­ãŠã‚ˆã³ ".js" ãƒ•ã‚¡ã‚¤ãƒ«ã«ã¤ã„ã¦ã€`Content-Type` ãƒ¬ã‚¹ãƒãƒ³ã‚¹ãƒ˜ãƒƒãƒ€ãƒ¼ã«å«ã‚ã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®charsetã‚’é¸æŠžã—ã¦ãã ã•ã„ã€‚
+3. `listening port` ã§proxyã¨ã—ã¦ã®å¾…å—ãƒãƒ¼ãƒˆç•ªå·ã‚’è¨­å®šã—ã¾ã™ã€‚
+4. start / stop ãƒœã‚¿ãƒ³ã§proxyã‚’èµ·å‹•/åœæ­¢ã—ã¾ã™ã€‚
+   - èµ·å‹•ã¯ä¸€çž¬ã§ã™ãŒã€åœæ­¢ã¯æ•°ç§’ã‹ã‹ã‚Šã¾ã™ã€‚
 
-### Ý’è•Û‘¶‚Æ•Û‘¶æ
+### è¨­å®šä¿å­˜ã¨ä¿å­˜å…ˆ
 
-- proxy‹N“®ŽžA‚¨‚æ‚ÑƒAƒvƒŠI—¹Žž‚É‚»‚ÌŽž“_‚ÌÝ’è(ƒ|[ƒg”Ô†‚Æƒ}ƒbƒsƒ“ƒOî•ñ)‚ª•Û‘¶‚³‚ê‚Ü‚·B
-- •Û‘¶æ : `$HOME/.sst-devtools-alter-proxy.yml` 
+- proxyèµ·å‹•æ™‚ã€ãŠã‚ˆã³ã‚¢ãƒ—ãƒªçµ‚äº†æ™‚ã«ãã®æ™‚ç‚¹ã®è¨­å®š(ãƒãƒ¼ãƒˆç•ªå·ã¨ãƒžãƒƒãƒ”ãƒ³ã‚°æƒ…å ±)ãŒä¿å­˜ã•ã‚Œã¾ã™ã€‚
+- ä¿å­˜å…ˆ : `$HOME/.sst-devtools-alter-proxy.yml` 
 
-### ƒIƒXƒXƒ‚ÌŽg‚¢•û
+### ã‚ªã‚¹ã‚¹ãƒ¡ã®ä½¿ã„æ–¹
 
-- ‘¼‚Ì local http proxy ‚Æ‘g‚Ý‡‚í‚¹‚é‚ÆŽg‚¢‚â‚·‚¢‚Å‚·B
-- —á‚¦‚Îƒuƒ‰ƒEƒU‚ÌƒvƒƒLƒV‚Æ‚µ‚Ä‚Í Burp Suite ( https://portswigger.net/burp ) ‚â Fiddler ( http://www.telerik.com/fiddler ) ‚ðÝ’è‚µA‚»‚Ìã—¬ƒvƒƒLƒV‚Æ‚µ‚Ä alter-proxy ‚ðÝ’è‚µ‚Ü‚·B
-- ‚»‚¤‚·‚é‚ÆA Burp ‚â Fiddler ‚ÅHTTP’ÊM‚Ì’†g‚ðƒ`ƒFƒbƒN‚µ‚Â‚ÂAalter-proxy ‚ÅƒRƒ“ƒeƒ“ƒc‚ð‘‚«Š·‚¦‚ÄAŠJ”­’†‚ÌWebƒTƒCƒg‚ÌƒfƒUƒCƒ“‚â“®ì‚ðS‚ä‚­‚Ü‚Å’²®‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+- ä»–ã® local http proxy ã¨çµ„ã¿åˆã‚ã›ã‚‹ã¨ä½¿ã„ã‚„ã™ã„ã§ã™ã€‚
+- ä¾‹ãˆã°ãƒ–ãƒ©ã‚¦ã‚¶ã®ãƒ—ãƒ­ã‚­ã‚·ã¨ã—ã¦ã¯ Burp Suite ( https://portswigger.net/burp ) ã‚„ Fiddler ( http://www.telerik.com/fiddler ) ã‚’è¨­å®šã—ã€ãã®ä¸Šæµãƒ—ãƒ­ã‚­ã‚·ã¨ã—ã¦ alter-proxy ã‚’è¨­å®šã—ã¾ã™ã€‚
+- ãã†ã™ã‚‹ã¨ã€ Burp ã‚„ Fiddler ã§HTTPé€šä¿¡ã®ä¸­èº«ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¤ã¤ã€alter-proxy ã§ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚’æ›¸ãæ›ãˆã¦ã€é–‹ç™ºä¸­ã®Webã‚µã‚¤ãƒˆã®ãƒ‡ã‚¶ã‚¤ãƒ³ã‚„å‹•ä½œã‚’å¿ƒã‚†ãã¾ã§èª¿æ•´ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-## ŠJ”­ŠÂ‹«
+## é–‹ç™ºç’°å¢ƒ
 
 * JDK >= 1.8.0_92
-* Eclipse >= 4.5.2 (Mars.2 Release), "Eclipse IDE for Java EE Developers" ƒpƒbƒP[ƒW‚ðŽg—p
-* Maven >= 3.3.9 (maven-wrapper‚É‚ÄŽ©“®“I‚ÉDL‚µ‚Ä‚­‚ê‚é)
-* ƒ\[ƒXƒR[ƒh‚âƒeƒLƒXƒgƒtƒ@ƒCƒ‹‘S”Ê‚Ì•¶ŽšƒR[ƒh‚ÍUTF-8‚ðŽg—p
+* Eclipse >= 4.5.2 (Mars.2 Release), "Eclipse IDE for Java EE Developers" ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ä½¿ç”¨
+* Maven >= 3.3.9 (maven-wrapperã«ã¦è‡ªå‹•çš„ã«DLã—ã¦ãã‚Œã‚‹)
+* ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚„ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚¡ã‚¤ãƒ«å…¨èˆ¬ã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯UTF-8ã‚’ä½¿ç”¨
 
-## ƒrƒ‹ƒh‚ÆŽÀs
+## ãƒ“ãƒ«ãƒ‰ã¨å®Ÿè¡Œ
 
 ```
 cd sst-devtools-alter-proxy/
 
-ƒrƒ‹ƒh:
+ãƒ“ãƒ«ãƒ‰:
 mvnw package
 
-jarƒtƒ@ƒCƒ‹‚©‚çŽÀs:
+jarãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å®Ÿè¡Œ:
 java -jar target/alter-proxy-xxx.jar
 
-MavenƒvƒƒWƒFƒNƒg‚©‚ç’¼ÚŽÀs:
+Mavenãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ç›´æŽ¥å®Ÿè¡Œ:
 mvnw exec:java
 ```
 
-## EclipseƒvƒƒWƒFƒNƒg—p‚ÌÝ’è
+## Eclipseãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆç”¨ã®è¨­å®š
 
-### Eclipse‚ÉLombok‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚é
+### Eclipseã«Lombokã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹
 
-1. lombok.jar ‚ðƒCƒ“ƒXƒg[ƒ‹‚µ‚ÄŽÀs‚µAEclipse‚ÉLombok‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚éB
+1. lombok.jar ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦å®Ÿè¡Œã—ã€Eclipseã«Lombokã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã€‚
   * https://projectlombok.org/
 
-ŽQlF
+å‚è€ƒï¼š
 
 * Lombok - Qiita
   * http://qiita.com/yyoshikaw/items/32a96332cc12854ca7a3
-* Lombok Žg‚¢•ûƒƒ‚ - Qiita
+* Lombok ä½¿ã„æ–¹ãƒ¡ãƒ¢ - Qiita
   * http://qiita.com/opengl-8080/items/671ffd4bf84fe5e32557
 
-### Eclipse‚ÉƒCƒ“ƒ|[ƒg‚·‚é
+### Eclipseã«ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹
 
-1. git‚ÅƒŠƒ|ƒWƒgƒŠ‚ðclone‚·‚éB
-2. Eclipse‚ð‹N“®‚µAFile -> Import ‚ðŠJ‚­B
-   1. import source ‚Å Maven -> Existing Maven Projects ‚ð‘I‘ð
-   2. Root Directory ‚Å–{ƒfƒBƒŒƒNƒgƒŠ‚ð‘I‚ÑApom.xml‚ª”FŽ¯‚³‚ê‚ê‚Î‚»‚Ì‚Ü‚ÜƒCƒ“ƒ|[ƒg‚Å‚«‚éB
+1. gitã§ãƒªãƒã‚¸ãƒˆãƒªã‚’cloneã™ã‚‹ã€‚
+2. Eclipseã‚’èµ·å‹•ã—ã€File -> Import ã‚’é–‹ãã€‚
+   1. import source ã§ Maven -> Existing Maven Projects ã‚’é¸æŠž
+   2. Root Directory ã§æœ¬ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’é¸ã³ã€pom.xmlãŒèªè­˜ã•ã‚Œã‚Œã°ãã®ã¾ã¾ã‚¤ãƒ³ãƒãƒ¼ãƒˆã§ãã‚‹ã€‚
 
-### Clean Up/Formatter Ý’è‚ðƒCƒ“ƒ|[ƒg‚·‚é
+### Clean Up/Formatter è¨­å®šã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹
 
-1. Window -> Preferences -> Java -> Code Style -> Clean Up -> Import... ‚©‚çA sst-eclipse-mars2-cleanup.xml ‚ðƒCƒ“ƒ|[ƒg‚·‚éB(sst-eclipse-mars2-cleanup ‚Æ‚¢‚¤–¼‘O‚Å“o˜^‚³‚ê‚é)
-2. Package Explorer ‚©‚çƒvƒƒWƒFƒNƒg‚ð‰EƒNƒŠƒbƒN -> Properties ‚ð‘I‘ð‚µAJava Code Style -> Clean Up ‚Å Enable project specific settings ‚Éƒ`ƒFƒbƒN‚ð“ü‚êAsst-eclipse-mars2-cleanup ‚ð‘I‘ð‚·‚éB
-3. Window -> Preferences -> Java -> Code Style -> Formatter -> Import... ‚©‚çA sst-eclipse-mars2-formatter.xml ‚ðƒCƒ“ƒ|[ƒg‚·‚éB(sst-eclipse-mars2-formatter ‚Æ‚¢‚¤–¼‘O‚Å“o˜^‚³‚ê‚é)
-4. Package Explorer ‚©‚çƒvƒƒWƒFƒNƒg‚ð‰EƒNƒŠƒbƒN -> Properties ‚ð‘I‘ð‚µAJava Code Style -> Formatter ‚Å Enable project specific settings ‚Éƒ`ƒFƒbƒN‚ð“ü‚êAsst-eclipse-mars2-formatter ‚ð‘I‘ð‚·‚éB
+1. Window -> Preferences -> Java -> Code Style -> Clean Up -> Import... ã‹ã‚‰ã€ sst-eclipse-mars2-cleanup.xml ã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ã€‚(sst-eclipse-mars2-cleanup ã¨ã„ã†åå‰ã§ç™»éŒ²ã•ã‚Œã‚‹)
+2. Package Explorer ã‹ã‚‰ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å³ã‚¯ãƒªãƒƒã‚¯ -> Properties ã‚’é¸æŠžã—ã€Java Code Style -> Clean Up ã§ Enable project specific settings ã«ãƒã‚§ãƒƒã‚¯ã‚’å…¥ã‚Œã€sst-eclipse-mars2-cleanup ã‚’é¸æŠžã™ã‚‹ã€‚
+3. Window -> Preferences -> Java -> Code Style -> Formatter -> Import... ã‹ã‚‰ã€ sst-eclipse-mars2-formatter.xml ã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹ã€‚(sst-eclipse-mars2-formatter ã¨ã„ã†åå‰ã§ç™»éŒ²ã•ã‚Œã‚‹)
+4. Package Explorer ã‹ã‚‰ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å³ã‚¯ãƒªãƒƒã‚¯ -> Properties ã‚’é¸æŠžã—ã€Java Code Style -> Formatter ã§ Enable project specific settings ã«ãƒã‚§ãƒƒã‚¯ã‚’å…¥ã‚Œã€sst-eclipse-mars2-formatter ã‚’é¸æŠžã™ã‚‹ã€‚
 
-### Swing Designer‚ðŽg‚¤
+### Swing Designerã‚’ä½¿ã†
 
-GUIƒc[ƒ‹ƒLƒbƒg‚Æ‚µ‚ÄJava‚ÌSwing‚ðŽg‚Á‚Ä‚¢‚éBEclipse‚Å‚ ‚ê‚ÎASwing Designer‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚é‚ÆƒOƒ‰ƒtƒBƒJƒ‹‚ÉSwing‚Ì‰æ–Ê‚ðÝŒv‚Å‚«‚éB
+GUIãƒ„ãƒ¼ãƒ«ã‚­ãƒƒãƒˆã¨ã—ã¦Javaã®Swingã‚’ä½¿ã£ã¦ã„ã‚‹ã€‚Eclipseã§ã‚ã‚Œã°ã€Swing Designerã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã¨ã‚°ãƒ©ãƒ•ã‚£ã‚«ãƒ«ã«Swingã®ç”»é¢ã‚’è¨­è¨ˆã§ãã‚‹ã€‚
 
 * https://projects.eclipse.org/projects/tools.windowbuilder
-  * "Eclipse WindowBuilder" ‚É Swing Desginer ‚àŠÜ‚Ü‚ê‚Ä‚¢‚éB
+  * "Eclipse WindowBuilder" ã« Swing Desginer ã‚‚å«ã¾ã‚Œã¦ã„ã‚‹ã€‚
 
-1. Help -> Install New Software ‚Ì "Work with:" ‚Å `Mars - http://download.eclipse.org/releases/mars` (Mars‚Ìê‡)‚ðƒvƒ‹ƒ_ƒEƒ“‚©‚ç‘I‘ð‚·‚éB
-   * ˆÓ}‚Æ‚µ‚Ä‚ÍAEclipse–{‘Ì‚ÌƒvƒƒWƒFƒNƒg‚È‚Ì‚ÅAŽg—p‚µ‚Ä‚¢‚éEclipse‚Ìƒo[ƒWƒ‡ƒ“‚É‰ž‚¶‚½ŒöŽ®‚ÌƒŠƒŠ[ƒXƒ_ƒEƒ“ƒ[ƒhURL‚ð‘I‘ð‚·‚éB
-2. "Swing Designer" ‚ÅƒtƒBƒ‹ƒ^‚µA"Swing Designer" ‚Éƒ`ƒFƒbƒN‚ð“ü‚ê‚ÄƒCƒ“ƒXƒg[ƒ‹‚·‚éB
-3. Šù‘¶‚ÌSwingƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌJavaƒ\[ƒX‚ðŠJ‚­Žž‚ÍA"Open With" => "WindowBuilder Editor" ‚ÅŠJ‚­B
+1. Help -> Install New Software ã® "Work with:" ã§ `Mars - http://download.eclipse.org/releases/mars` (Marsã®å ´åˆ)ã‚’ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ã‹ã‚‰é¸æŠžã™ã‚‹ã€‚
+   * æ„å›³ã¨ã—ã¦ã¯ã€Eclipseæœ¬ä½“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆãªã®ã§ã€ä½¿ç”¨ã—ã¦ã„ã‚‹Eclipseã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã«å¿œã˜ãŸå…¬å¼ã®ãƒªãƒªãƒ¼ã‚¹ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰URLã‚’é¸æŠžã™ã‚‹ã€‚
+2. "Swing Designer" ã§ãƒ•ã‚£ãƒ«ã‚¿ã—ã€"Swing Designer" ã«ãƒã‚§ãƒƒã‚¯ã‚’å…¥ã‚Œã¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã€‚
+3. æ—¢å­˜ã®Swingã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®Javaã‚½ãƒ¼ã‚¹ã‚’é–‹ãæ™‚ã¯ã€"Open With" => "WindowBuilder Editor" ã§é–‹ãã€‚
 
-Žg‚¢•û‚ÌŽQl‹LŽ–F
+ä½¿ã„æ–¹ã®å‚è€ƒè¨˜äº‹ï¼š
 
-* ŠJ”­ƒƒ‚ SwingDesigner‚ÌƒCƒ“ƒXƒg[ƒ‹‚ÆŽg—p
+* é–‹ç™ºãƒ¡ãƒ¢ SwingDesignerã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¨ä½¿ç”¨
   * http://developmentmemo.blog.fc2.com/blog-entry-140.html
-* java‚Å’´ŠÈ’P‚ÉGUI‚ðì¬‚·‚é‚½‚ß‚ÌEclipseƒvƒ‰ƒOƒCƒ“uSwingDesignerv ƒCƒ“ƒXƒg[ƒ‹ - ‚¤‚ß‚·‚±‚ñ‚Ô
+* javaã§è¶…ç°¡å˜ã«GUIã‚’ä½œæˆã™ã‚‹ãŸã‚ã®Eclipseãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã€ŒSwingDesignerã€ ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ« - ã†ã‚ã™ã“ã‚“ã¶
   * http://konbu13.hatenablog.com/entry/2013/12/25/230637
-* uSwingDesignerv‚ÅSwingƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ð‚Â‚­‚ë‚¤! ‚»‚Ì2`ƒAƒvƒŠƒP[ƒVƒ‡ƒ“V‹Kì¬‚ÆƒRƒ“ƒ|[ƒlƒ“ƒg”z’u - ‚¤‚ß‚·‚±‚ñ‚Ô
+* ã€ŒSwingDesignerã€ã§Swingã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã¤ãã‚ã†! ãã®2ï½žã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³æ–°è¦ä½œæˆã¨ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆé…ç½® - ã†ã‚ã™ã“ã‚“ã¶
   * http://konbu13.hatenablog.com/entry/2013/12/27/163202
 
-”õlF
+å‚™è€ƒï¼š
 
-* ‰‚ß‚ÄSwing Designer‚ÅƒtƒŒ[ƒ€‚ðì¬‚µAƒŒƒCƒAƒEƒg‚Å `MigLayout` ‚ð‘I‘ð‚µ‚½‚Æ‚±‚ëAEclipse ƒvƒƒWƒFƒNƒg’¼‰º‚É `miglayout15-swing.jar` ‚Æ `miglayout-src.zip` ‚ªŽ©“®‚ÅDL‚³‚êAEclipse ƒvƒƒWƒFƒNƒg‚Ì Java Build Path ‚Éƒ‰ƒCƒuƒ‰ƒŠ‚Æ‚µ‚ÄŽ©“®‚Å’Ç‰Á‚³‚ê‚Ä‚µ‚Ü‚Á‚½B
-* Swing Designer ‚ª’Í‚ñ‚Å‚¢‚½‚½‚ß‚©AEclipse ‹N“®’†‚Í‚±‚ê‚ç‚Ìƒtƒ@ƒCƒ‹‚ÍŠ®‘S‚É‚Ííœ‚Å‚«‚È‚©‚Á‚½B
-* ¨‚»‚Ì‚½‚ßAˆê’UEclipse‚ðI—¹‚³‚¹‚Äƒtƒ@ƒCƒ‹‚ðíœ‚µ‚½‚èAEclipseƒvƒƒWƒFƒNƒg ƒvƒƒpƒeƒB‚ÌJava Build Path ‚©‚ç‚±‚ê‚ç‚Ìjar‚ðŽèì‹Æ‚Åíœ‚µ‚½‚è‚µ‚½B
-* ‚³‚ç‚ÉA‚»‚Ì‚Ü‚Ü‚Å‚Í `MigLayout` ŠÖ˜A‚Ìimport‚ÅƒGƒ‰[‚Æ‚È‚é‚½‚ßApom.xml ‚É“¯“™‚Ì `com.miglayout:miglayout-swing:4.2` ‚ð’Ç‰Á‚µ‚ÄƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚ð‰ðŒˆ‚µ‚½B
+* åˆã‚ã¦Swing Designerã§ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ä½œæˆã—ã€ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã§ `MigLayout` ã‚’é¸æŠžã—ãŸã¨ã“ã‚ã€Eclipse ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆç›´ä¸‹ã« `miglayout15-swing.jar` ã¨ `miglayout-src.zip` ãŒè‡ªå‹•ã§DLã•ã‚Œã€Eclipse ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã® Java Build Path ã«ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã¨ã—ã¦è‡ªå‹•ã§è¿½åŠ ã•ã‚Œã¦ã—ã¾ã£ãŸã€‚
+* Swing Designer ãŒæŽ´ã‚“ã§ã„ãŸãŸã‚ã‹ã€Eclipse èµ·å‹•ä¸­ã¯ã“ã‚Œã‚‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯å®Œå…¨ã«ã¯å‰Šé™¤ã§ããªã‹ã£ãŸã€‚
+* â†’ãã®ãŸã‚ã€ä¸€æ—¦Eclipseã‚’çµ‚äº†ã•ã›ã¦ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã—ãŸã‚Šã€Eclipseãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®Java Build Path ã‹ã‚‰ã“ã‚Œã‚‰ã®jarã‚’æ‰‹ä½œæ¥­ã§å‰Šé™¤ã—ãŸã‚Šã—ãŸã€‚
+* ã•ã‚‰ã«ã€ãã®ã¾ã¾ã§ã¯ `MigLayout` é–¢é€£ã®importã§ã‚¨ãƒ©ãƒ¼ã¨ãªã‚‹ãŸã‚ã€pom.xml ã«åŒç­‰ã® `com.miglayout:miglayout-swing:4.2` ã‚’è¿½åŠ ã—ã¦ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ã‚’è§£æ±ºã—ãŸã€‚
 
-#### `MigLayout` ‚ÅŽg—p‚µ‚Ä‚¢‚é `miglayout-swing` ‚É‚Â‚¢‚Ä(2017-09-27Žž“_)F
+#### `MigLayout` ã§ä½¿ç”¨ã—ã¦ã„ã‚‹ `miglayout-swing` ã«ã¤ã„ã¦(2017-09-27æ™‚ç‚¹)ï¼š
 
 * http://www.miglayout.com/
-* ‚à‚Æ‚à‚Æ http://www.migcalendar.com/ ‚Æ‚¢‚¤Java‚ÌGUI‚ÌƒJƒŒƒ“ƒ_[ƒRƒ“ƒ|[ƒlƒ“ƒg‚ðŠJ”­‚µ‚Ä‚¢‚é‰ïŽÐ‚Ì»•iB
-* ƒ‰ƒCƒZƒ“ƒX‚Æ‚µ‚Ä‚ÍBSD/GPL‚Ìƒfƒ…ƒAƒ‹ƒ‰ƒCƒZƒ“ƒX‚È‚Ì‚ÅA¡‰ñ‚Ì—˜—p‚É‚Í–â‘è‚È‚¢‚Æ”»’f‚µ‚½B(2017-09-27)
+* ã‚‚ã¨ã‚‚ã¨ http://www.migcalendar.com/ ã¨ã„ã†Javaã®GUIã®ã‚«ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’é–‹ç™ºã—ã¦ã„ã‚‹ä¼šç¤¾ã®è£½å“ã€‚
+* ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã¨ã—ã¦ã¯BSD/GPLã®ãƒ‡ãƒ¥ã‚¢ãƒ«ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ãªã®ã§ã€ä»Šå›žã®åˆ©ç”¨ã«ã¯å•é¡Œãªã„ã¨åˆ¤æ–­ã—ãŸã€‚(2017-09-27)
