@@ -1,6 +1,9 @@
 package com.sst.devtools.alterproxy;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +44,7 @@ public class LFSMapEntryTest {
         assertEquals("localhost", rows[0]);
         assertEquals("/aaa/bbb/", rows[1]);
         if (File.separatorChar == '\\') {
-            assertEquals("C:\\local\\fs", rows[2]);
+            assertEquals("c:\\local\\fs", rows[2].toLowerCase());
         } else {
             assertEquals("", rows[2]);
         }
